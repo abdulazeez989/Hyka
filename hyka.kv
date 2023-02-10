@@ -1,0 +1,859 @@
+from kivymd.uix.button import MDRaisedButton, MDFlatButton
+from kivymd.uix.label import MDLabel
+from kivy.lang import Builder
+from kivy.uix import widget
+from kivymd.app import MDApp
+from kivymd.uix.floatlayout import FloatLayout
+from kivymd.uix.gridlayout import GridLayout
+from kivy.uix.scrollview import ScrollView
+from kivy.properties import StringProperty, ObjectProperty, NumericProperty
+import time
+from kivy.animation import Animation
+from datetime import datetime
+from kivy.clock import Clock
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.scrollview import MDScrollView
+from kivymd.uix.tab import MDTabsBase, MDTabs
+from kivymd.icon_definitions import md_icons
+import random
+from kivymd.uix.toolbar import MDTopAppBar
+
+KV="""
+<Tab>
+ScreenManager:
+	screen_manager:screen_manager
+	id:screen_manager
+	
+					
+	Screen:
+		name:"f1_screen"
+		FloatLayout:
+			canvas:
+				Rectangle:
+					source:'T5.jpg'
+					pos:self.pos
+					size:self.size
+					
+			
+	Screen:
+		name:"f2_screen"
+		FloatLayout:
+			canvas:
+				Rectangle:
+					source:'D4.jpg'
+					pos:self.pos
+					size:self.size
+					
+	Screen:
+		name: "f3_screen"
+		FloatLayout:
+			canvas:
+				Rectangle:
+					source:'C1.jpg'
+					pos:self.pos
+					size:self.size
+					
+	Screen:
+		name: "flow_screen"
+		green_md_tab:green_md_tab
+		MDNavigationLayout:
+			MDScreenManager:
+				MDScreen:
+					MDGridLayout:
+						cols:1
+						spacing: "6sp"
+						MDTopAppBar:
+							md_bg_color: "green"
+							title: "Destinations"
+							id: left_action_it
+							left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+						
+						MDTabs:
+							underline_color:"white"
+							text_color_active:"white"
+							text_color_normal: "teal"
+							on_tab_switch: app.on_tab_switch()
+							id: green_md_tab
+							text_color_normal: 1,1,0,1
+							background_color:"lightgreen"
+							
+							Tab:
+								name:"campos"
+								title:"Campos"
+								id: tab_tab
+								GridLayout:
+									cols: 2
+									spacing: "7sp"
+									
+									MDSmartTile:
+										on_press:root.screen_manager.current='camp_screen'
+										radius: 18
+										box_radius: [0, 0, 24, 24]
+										box_color: 1, 1, 1, .2
+										source: "C1.jpg"
+										size_hint: (None, None)
+										width: "170dp"
+										adaptive_height: True
+										height: "200dp"
+										
+										MDLabel:
+											text: "Brazil"
+											color: 1, 1, 1, 1
+											
+									MDSmartTile:
+										radius: 18
+										box_radius: [0, 0, 24, 24]
+										box_color: 1, 1, 1, .2
+										source: "C4.jpg"
+										size_hint: (None, None)
+										width: "170dp"
+										adaptive_height: True
+										height: "200dp"
+										
+										MDLabel:
+											text: "Cuba"
+											color: 1, 1, 1, 1
+											
+									MDSmartTile:
+										radius: 18
+										box_radius: [0, 0, 24, 24]
+										box_color: 1, 1, 1, .2
+										source: "C3.jpg"
+										size_hint: (None, None)
+										width: "170dp"
+										adaptive_height: True
+										height: "200dp"
+										
+										MDLabel:
+											text: "Llanos"
+											color: 1, 1, 1, 1
+											
+									MDSmartTile:
+										radius: 18
+										box_radius: [0, 0, 24, 24]
+										box_color: 1, 1, 1, .2
+										source: "C2.jpg"
+										size_hint: (None, None)
+										width: "170dp"
+										adaptive_height: True
+										height: "200dp"
+										MDLabel:
+											text: "Serenghetti"
+											color: 1, 1, 1, 1
+											
+											
+									
+										
+							Tab:
+								name:"Rforest"
+								id:tab_tab
+								title:"Rain Forest"
+								MDScrollView:
+									do_scroll_x: False
+									GridLayout:
+										cols:1
+										size_hint_y: None
+										height: "1000sp"
+										GridLayout
+											cols: 2
+											spacing: "7sp"
+											
+											MDSmartTile:
+												on_press:root.screen_manager.current='forest_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "f1.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Brazil"
+													color: 1, 1, 1, 1
+													
+											MDSmartTile:
+												on_press:root.screen_manager.current='forest_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "f2.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Tuscany"
+													color: 1, 1, 1, 1
+													
+											MDSmartTile:
+												on_press:root.screen_manager.current='forest_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "f3.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Almeira"
+													color: 1, 1, 1, 1	
+											
+											MDSmartTile:
+												radius: 18
+												on_press:root.screen_manager.current='forest_screen'
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "F4.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Uganda"
+													color: 1, 1, 1, 1	
+													
+											MDSmartTile:
+												radius: 18
+												on_press:root.screen_manager.current='forest_screen'
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "F5.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Havana"
+													color: 1, 1, 1, 1	
+											
+											MDSmartTile:
+												radius: 18
+												on_press:root.screen_manager.current='forest_screen'
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "F6.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Java"
+													color: 1, 1, 1, 1	
+													
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "F7.jpg"
+												size_hint: (None, None)
+												width: "170dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Hawai"
+													color: 1, 1, 1, 1	
+											
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "F8.jpg"
+												size_hint: (None, None)
+												width: "173dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Siberia"
+													color: 1, 1, 1, 1	
+									
+							Tab:
+								name:"deserts"
+								id:tab_tab
+								title:"Deserts"
+								MDScrollView:
+									do_scroll_x: False
+									GridLayout:
+										cols:1
+										size_hint_y: None
+										height: "1000sp"
+										GridLayout
+											cols: 2
+											spacing: "6sp"
+											
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D2.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Sahara"
+													color: 1, 1, 1, 1	
+											
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D1.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Dubai"
+													color: 1, 1, 1, 1
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D3.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Namib"
+													color: 1, 1, 1, 1	
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D4.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Norfolk"
+													color: 1, 1, 1, 1	
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D5.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Mali"
+													color: 1, 1, 1, 1	
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D1.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Arab"
+													color: 1, 1, 1, 1	
+											MDSmartTile:
+												on_press:root.screen_manager.current='desert_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "D3.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Armenia"
+													color: 1, 1, 1, 1	
+											
+							Tab:
+								name:"tropicals"
+								id: tab_tab
+								title:"Tropicals"
+								MDScrollView:
+									do_scroll_x: False
+									GridLayout:
+										cols:1
+										size_hint_y: None
+										height: "1000sp"
+										GridLayout
+											cols: 2
+											spacing: "6sp"
+											MDSmartTile:
+												radius: 18
+												on_press:root.screen_manager.current='tropical_screen'
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T1.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Havana"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T2.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Java"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T3.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Montreal"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T4.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Tobago"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T5.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Java"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T6.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Lua"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T7.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Japan"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												on_press:root.screen_manager.current='tropical_screen'
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "T8.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Florez"
+													color: 1, 1, 1,1
+									
+							Tab:
+								id:tab_tab
+								name:"alpines"
+								title:"Alpines"
+								MDScrollView:
+									do_scroll_x: False
+									GridLayout:
+										cols:1
+										size_hint_y: None
+										height: "1000sp"
+										GridLayout
+											cols: 2
+											spacing: "7sp"
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "A1.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Alaska"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "A2.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Cuba"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "A4.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Everest"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "A5.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Tobago"
+													color: 1, 1, 1,1
+											MDSmartTile:
+												radius: 18
+												box_radius: [0, 0, 24, 24]
+												box_color: 1, 1, 1, .2
+												source: "A1.jpg"
+												size_hint: (None, None)
+												width: "180dp"
+												adaptive_height: True
+												height: "200dp"
+												
+												MDLabel:
+													text: "Java"
+													color:
+											
+								
+							Tab:
+								id:tab_tab
+								name:"alpines"
+								title:"Beaches"
+								GridLayout:
+									cols: 2
+									spacing: "6sp"
+						
+			
+			MDNavigationDrawer:
+				id: nav_drawer
+				radius: (0, 16, 16, 0)
+				MDNavigationDrawerMenu:
+		
+			
+	Screen:
+		main_page:main_page
+		name: "main_screen"
+		Widget:
+			FloatLayout:
+				id:main_page
+				canvas:
+					Rectangle:
+						source:'main.jpg'
+						pos:self.pos
+						size:self.size
+				MDCard:
+					orientation: 'vertical'
+					size_hint: .6, .1
+					pos_hint: {"x": 0.2, "center_y": .88}
+					FloatLayout:
+						
+						MDRaisedButton:
+							text: "Start Ur Journery"
+							halign: "center"
+							pos_hint: {"x":.22, "center_y":.56}
+							text_color: 1,1,1,1
+							on_press:root.screen_manager.current='flow_screen'
+							
+	Screen:
+		name:"camp_screen"
+		FloatLayout:
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .5
+				pos_hint: {"x": 0, "center_y": .95}
+				
+				FloatLayout:
+					canvas:
+						Color:
+						Rectangle:
+							source: 'C3.jpg'
+							pos:self.pos
+							size:self.size
+					size_hint: 1, .4
+					
+					MDFloatingActionButton:
+						pos_hint: {"x": 0.7, "center_y": .5}
+						icon: "pencil"
+						on_press:root.screen_manager.current='flow_screen'
+							
+							
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .7
+				pos_hint: {"x": 0, "center_y": .37}
+					
+				GridLayout:
+					cols:1
+					MDScrollView:
+						do_scroll_x: False
+						MDGridLayout:
+							cols:1
+							size_hint_y: None
+							height: "700sp"
+							MDGridLayout:
+								cols:1
+								spacing:"3sp"
+								MDLabel:
+									pos_hint: {"x": 0, "center_y": .55}
+									size_hint: 1, .3
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDCard:
+									orientation: 'vertical'
+									size_hint: 1, .2
+								FitImage:
+									source: "C4.jpg"
+					
+	Screen:
+		name:"forest_screen"
+		FloatLayout:
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .5
+				pos_hint: {"x": 0, "center_y": .95}
+				
+				FloatLayout:
+					canvas:
+						Color:
+						Rectangle:
+							source: 'F4.jpg'
+							pos:self.pos
+							size:self.size
+					size_hint: 1, .4
+					
+					MDFloatingActionButton:
+						pos_hint: {"x": 0.7, "center_y": .5}
+						icon: "pencil"
+						on_press:root.screen_manager.current='flow_screen'
+							
+							
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .7
+				pos_hint: {"x": 0, "center_y": .37}
+					
+				GridLayout:
+					cols:1
+					MDScrollView:
+						do_scroll_x: False
+						MDGridLayout:
+							cols:1
+							size_hint_y: None
+							height: "700sp"
+							MDGridLayout:
+								cols:1
+								spacing:"3sp"
+								MDLabel:
+									pos_hint: {"x": 0, "center_y": .55}
+									size_hint: 1, .3
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDCard:
+									orientation: 'vertical'
+									size_hint: 1, .2
+								FitImage:
+									source: "F5.jpg"
+	
+	Screen:
+		name:"desert_screen"
+		FloatLayout:
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .5
+				pos_hint: {"x": 0, "center_y": .95}
+				
+				FloatLayout:
+					canvas:
+						Color:
+						Rectangle:
+							source: 'D4.jpg'
+							pos:self.pos
+							size:self.size
+					size_hint: 1, .4
+					
+					MDFloatingActionButton:
+						pos_hint: {"x": 0.7, "center_y": .5}
+						icon: "pencil"
+						on_press:root.screen_manager.current='flow_screen'
+							
+							
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .7
+				pos_hint: {"x": 0, "center_y": .37}
+					
+				GridLayout:
+					cols:1
+					MDScrollView:
+						do_scroll_x: False
+						MDGridLayout:
+							cols:1
+							size_hint_y: None
+							height: "700sp"
+							MDGridLayout:
+								cols:1
+								spacing:"3sp"
+								MDLabel:
+									pos_hint: {"x": 0, "center_y": .55}
+									size_hint: 1, .3
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDCard:
+									orientation: 'vertical'
+									size_hint: 1, .2
+								FitImage:
+									source: "D1.jpg"
+									
+	Screen:
+		name:"tropical_screen"
+		FloatLayout:
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .5
+				pos_hint: {"x": 0, "center_y": .95}
+				
+				FloatLayout:
+					canvas:
+						Color:
+						Rectangle:
+							source: 'T4.jpg'
+							pos:self.pos
+							size:self.size
+					size_hint: 1, .4
+					
+					MDFloatingActionButton:
+						pos_hint: {"x": 0.7, "center_y": .5}
+						icon: "pencil"
+						on_press:root.screen_manager.current='flow_screen'
+							
+							
+			MDCard:
+				orientation: 'vertical'
+				size_hint: 1, .7
+				pos_hint: {"x": 0, "center_y": .37}
+					
+				GridLayout:
+					cols:1
+					MDScrollView:
+						do_scroll_x: False
+						MDGridLayout:
+							cols:1
+							size_hint_y: None
+							height: "700sp"
+							MDGridLayout:
+								cols:1
+								spacing:"3sp"
+								MDLabel:
+									pos_hint: {"x": 0, "center_y": .55}
+									size_hint: 1, .3
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDLabel:
+									size_hint: 1, .4
+									text: "Campos that are located in brazil are very unique and vibrant, this makes it the number one attraction site in the west of south America, all over the world the praires of the west Indies are among the best"
+								MDCard:
+									orientation: 'vertical'
+									size_hint: 1, .2
+								FitImage:
+									source: "T5.jpg"
+				
+				
+"""
